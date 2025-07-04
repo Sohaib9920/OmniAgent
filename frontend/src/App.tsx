@@ -1,9 +1,11 @@
 import "./App.css";
 import Flow from "./flow";
+import { Sidebar } from "./components/sidebar";
 
 function App() {
   return (
     <div className="w-screen h-screen">
+      <Sidebar />
       <Flow></Flow>
     </div>
   );

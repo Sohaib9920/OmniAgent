@@ -8,18 +8,39 @@ import {
   type Node,
   ReactFlow,
   type Edge,
+  Position,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import TextUpdaterNode from "../CustomNodes/InputText";
+import PromptNode from "../CustomNodes/PromptNode";
+import { prompt } from "../data_assets/prompt";
 
 const initialNodes = [
-  { id: "1", position: { x: 0, y: 0 }, data: { label: "hello" } },
+  {
+    id: "1",
+    position: { x: 0, y: 0 },
+    data: { label: "hello" },
+    sourcePosition: Position.Right,
+    targetPosition: Position.Left,
+    style: {
+      width: 100,
+      height: 50,
+      color: "red",
+      backgroundColor: "black",
+    },
+  },
   { id: "2", position: { x: 100, y: 100 }, data: { label: "world" } },
   {
     id: "text-node1",
     position: { x: 50, y: 50 },
     data: { value: 123 },
     type: "textUpdater",
+  },
+  {
+    id: "4",
+    position: { x: 200, y: 200 },
+    data: prompt,
+    type: "promptNode",
   },
 ];
 
@@ -28,7 +49,10 @@ const initialEdges = [];
 function Flow() {
   const [nodes, setNodes] = useState<Array<Node>>(initialNodes);
   const [edges, setEdges] = useState<Array<Edge>>(initialEdges);
-  const nodeTypes = useMemo(() => ({ textUpdater: TextUpdaterNode }), []);
+  const nodeTypes = useMemo(
+    () => ({ textUpdater: TextUpdaterNode, promptNode: PromptNode }),
+    []
+  );
 
   const onNodesChange = useCallback(
     (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
@@ -45,18 +69,20 @@ function Flow() {
   );
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onConnect={onConnect}
-      nodeTypes={nodeTypes}
-      fitView
-    >
-      <Background />
-      <Controls />
-    </ReactFlow>
+    <div className="w-full h-full">
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        fitView
+      >
+        <Background />
+        <Controls />
+      </ReactFlow>
+    </div>
   );
 }
 
