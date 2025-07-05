@@ -47,6 +47,7 @@ const initialNodes = [
 const initialEdges = [];
 
 function Flow() {
+  console.log("flow render");
   const [nodes, setNodes] = useState<Array<Node>>(initialNodes);
   const [edges, setEdges] = useState<Array<Edge>>(initialEdges);
   const nodeTypes = useMemo(
