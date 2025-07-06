@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useRef, useState } from "react";
 import {
   addEdge,
   applyEdgeChanges,
@@ -9,11 +9,13 @@ import {
   ReactFlow,
   type Edge,
   Position,
+  useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import TextUpdaterNode from "../CustomNodes/InputText";
 import PromptNode from "../CustomNodes/PromptNode";
 import { prompt } from "../data_assets/prompt";
+import { Sidebar } from "../components/sidebar";
 
 const initialNodes = [
   {
@@ -50,6 +52,9 @@ function Flow() {
   console.log("flow render");
   const [nodes, setNodes] = useState<Array<Node>>(initialNodes);
   const [edges, setEdges] = useState<Array<Edge>>(initialEdges);
+  const reactFlowWrapper = useRef(null);
+  const { screenToFlowPosition } = useReactFlow();
+
   const nodeTypes = useMemo(
     () => ({ textUpdater: TextUpdaterNode, promptNode: PromptNode }),
     []
@@ -69,20 +74,58 @@ function Flow() {
     []
   );
 
+  const onDragOver = useCallback((event) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
+
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+      const type = event.dataTransfer.getData("application/reactflow");
+      const data = JSON.parse(event.dataTransfer.getData("json"));
+
+      if (typeof type === "undefined" || !type) {
+        return;
+      }
+
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+
+      setNodes((nds) => {
+        const newNode = {
+          id: `${type}-${nds.filter((nd) => nd.type === type).length + 1}`,
+          type,
+          position,
+          data,
+        };
+        return nds.concat(newNode);
+      });
+    },
+    [screenToFlowPosition]
+  );
+
   return (
     <div className="w-full h-full">
-      <ReactFlow
-        nodes={nodes}
-        edges={edges}
-        onNodesChange={onNodesChange}
-        onEdgesChange={onEdgesChange}
-        onConnect={onConnect}
-        nodeTypes={nodeTypes}
-        fitView
-      >
-        <Background />
-        <Controls />
-      </ReactFlow>
+      <Sidebar />
+      <div className="w-full h-full" ref={reactFlowWrapper}>
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          nodeTypes={nodeTypes}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+          fitView
+        >
+          <Background />
+          <Controls></Controls>
+        </ReactFlow>
+      </div>
     </div>
   );
 }

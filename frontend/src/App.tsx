@@ -1,12 +1,13 @@
 import "./App.css";
 import Flow from "./flow";
-import { Sidebar } from "./components/sidebar";
+import { ReactFlowProvider } from "@xyflow/react";
 
 function App() {
   return (
     <div className="w-screen h-screen">
-      <Sidebar />
-      <Flow></Flow>
+      <ReactFlowProvider>
+        <Flow></Flow>
+      </ReactFlowProvider>
     </div>
   );
 }

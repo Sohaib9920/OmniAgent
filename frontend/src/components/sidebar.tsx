@@ -7,10 +7,10 @@ export function Sidebar() {
     nodeType: string
   ) {
     event.dataTransfer.setData("application/reactflow", nodeType);
-    event.dataTransfer.setData("application/json", JSON.stringify(prompt));
+    event.dataTransfer.setData("json", JSON.stringify(prompt));
     event.dataTransfer.effectAllowed = "move";
-    console.log("drag start", nodeType);
   }
+
   return (
     <div className="h-full w-48 bg-slate-200 absolute z-10 flex flex-col">
       <div
