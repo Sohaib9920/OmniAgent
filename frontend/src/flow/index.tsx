@@ -108,9 +108,9 @@ function Flow() {
   );
 
   return (
-    <div className="w-full h-full">
+    <div className="w-full h-full flex flex-row">
       <Sidebar />
-      <div className="w-full h-full" ref={reactFlowWrapper}>
+      <div className="w-screen h-full" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}
           edges={edges}
