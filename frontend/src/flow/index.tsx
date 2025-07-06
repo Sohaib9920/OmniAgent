@@ -8,55 +8,27 @@ import {
   type Node,
   ReactFlow,
   type Edge,
-  Position,
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import TextUpdaterNode from "../CustomNodes/InputText";
 import PromptNode from "../CustomNodes/PromptNode";
-import { prompt } from "../data_assets/prompt";
 import { Sidebar } from "../components/sidebar";
-
-const initialNodes = [
-  {
-    id: "1",
-    position: { x: 0, y: 0 },
-    data: { label: "hello" },
-    sourcePosition: Position.Right,
-    targetPosition: Position.Left,
-    style: {
-      width: 100,
-      height: 50,
-      color: "red",
-      backgroundColor: "black",
-    },
-  },
-  { id: "2", position: { x: 100, y: 100 }, data: { label: "world" } },
-  {
-    id: "text-node1",
-    position: { x: 50, y: 50 },
-    data: { value: 123 },
-    type: "textUpdater",
-  },
-  {
-    id: "4",
-    position: { x: 200, y: 200 },
-    data: prompt,
-    type: "promptNode",
-  },
-];
-
-const initialEdges = [];
+import ModelNode from "../CustomNodes/ModelNode";
 
 function Flow() {
   console.log("flow render");
-  const [nodes, setNodes] = useState<Array<Node>>(initialNodes);
-  const [edges, setEdges] = useState<Array<Edge>>(initialEdges);
+  const [nodes, setNodes] = useState<Array<Node>>([]);
+  const [edges, setEdges] = useState<Array<Edge>>([]);
   const reactFlowWrapper = useRef(null);
   const { screenToFlowPosition } = useReactFlow();
 
   const nodeTypes = useMemo(
-    () => ({ textUpdater: TextUpdaterNode, promptNode: PromptNode }),
+    () => ({
+      textUpdater: TextUpdaterNode,
+      promptNode: PromptNode,
+      modelNode: ModelNode,
+    }),
     []
   );
 

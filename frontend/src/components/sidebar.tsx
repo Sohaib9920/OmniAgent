@@ -1,3 +1,4 @@
+import { llm_chain } from "../data_assets/agent";
 import { prompt } from "../data_assets/prompt";
 
 export function Sidebar() {
@@ -7,8 +8,15 @@ export function Sidebar() {
     nodeType: string
   ) {
     event.dataTransfer.setData("application/reactflow", nodeType);
-    event.dataTransfer.setData("json", JSON.stringify(prompt));
     event.dataTransfer.effectAllowed = "move";
+    let json;
+    if (nodeType === "promptNode") {
+      json = JSON.stringify(prompt);
+    }
+    if (nodeType === "modelNode") {
+      json = JSON.stringify(llm_chain);
+    }
+    event.dataTransfer.setData("json", json);
   }
 
   return (
@@ -19,6 +27,13 @@ export function Sidebar() {
         draggable
       >
         prompt Node
+      </div>
+      <div
+        className="w-full border border-black text-center cursor-grab"
+        onDragStart={(e) => onDragStart(e, "modelNode")}
+        draggable
+      >
+        model Node
       </div>
     </div>
   );

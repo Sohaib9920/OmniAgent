@@ -2,7 +2,7 @@ import { Handle, Position } from "@xyflow/react";
 import { useContext } from "react";
 import { PopUpContext } from "../../context/popUpContext";
 
-function PromptNode({ data }) {
+function ModelNode({ data }) {
   const { openPopUp } = useContext(PopUpContext);
   return (
     <div
@@ -15,8 +15,8 @@ function PromptNode({ data }) {
       <label className="text-sm absolute bg-white -top-3 left-1 w-14 text-center cursor-grab">
         Prompt
       </label>
-      <div className="text-xs truncate w-full h-10 bg-slate-50">
-        {data.template}
+      <div className="text-xs w-full text-center h-min">
+        {data.llm.model_name}
       </div>
 
       <Handle type="target" position={Position.Right}></Handle>
@@ -24,4 +24,4 @@ function PromptNode({ data }) {
   );
 }
 
-export default PromptNode;
+export default ModelNode;
