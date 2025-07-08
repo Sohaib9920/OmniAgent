@@ -1,4 +1,5 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
+import { useLocation } from "react-router";
 
 type locationContextType = {
   atual: Array<string>;
@@ -48,6 +49,7 @@ const initialValue = {
 export const locationContext = createContext<locationContextType>(initialValue);
 
 export function LocationProvider({ children }) {
+  console.log("LocationProvider render");
   const [atual, setAtual] = useState(initialValue.atual);
   const [isStackedOpen, setIsStackedOpen] = useState(
     initialValue.isStackedOpen
@@ -55,6 +57,10 @@ export function LocationProvider({ children }) {
   const [showSideBar, setShowSideBar] = useState(initialValue.showSideBar);
   const [extraNavigation, setExtraNavigation] = useState({ title: "" });
   const [extraComponent, setExtraComponent] = useState(null);
+  const location = useLocation();
+  useEffect(() => {
+    setAtual(window.location.pathname.replace(/\/$/g, "").split("/"));
+  }, [location]);
   return (
     <locationContext.Provider
       value={{

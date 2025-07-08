@@ -1,6 +1,6 @@
 import { createContext, useState } from "react";
 import type { alertDropdownItem } from "../alerts/alertDropDown";
-var _ = require("lodash");
+import _ from "lodash";
 
 type alertContextType = {
   errorData: { title: string; list?: Array<string> };
@@ -18,9 +18,9 @@ type alertContextType = {
   notificationCenter: boolean;
   setNotificationCenter: (newState: boolean) => void;
   notificationList: Array<alertDropdownItem>;
-  pushNotificationList: (notrification: alertDropdownItem) => void;
+  pushNotificationList: (notification: alertDropdownItem) => void;
   clearNotificationList: () => void;
-  removeFromNotificationList: (index: string) => void;
+  removeFromNotificationList: (id: string) => void;
 };
 
 const initialValue = {
@@ -46,7 +46,24 @@ const initialValue = {
 
 export const alertContext = createContext<alertContextType>(initialValue);
 
+const initialAlerts: Array<alertDropdownItem> = [
+  { type: "success", title: "Settings saved successfully!", id: "success-123" },
+  {
+    type: "error",
+    title: "Failed to upload file(s)",
+    list: ["Image size too large", "Unsupported file format"],
+    id: "error-456",
+  },
+  {
+    type: "notice",
+    title: "New update available!",
+    link: "/settings/general/main",
+    id: "notice-789",
+  },
+];
+
 export function AlertProvider({ children }) {
+  console.log("AlertProvier render");
   const [errorData, setErrorDataState] = useState<{
     title: string;
     list?: Array<string>;
@@ -62,22 +79,12 @@ export function AlertProvider({ children }) {
   });
   const [successOpen, setSuccessOpen] = useState(false);
   const [notificationCenter, setNotificationCenter] = useState(false);
-  const [notificationList, setNotificationList] = useState<
-    Array<alertDropdownItem>
-  >([]);
-
+  const [notificationList, setNotificationList] =
+    useState<Array<alertDropdownItem>>(initialAlerts);
   const pushNotificationList = (notification: alertDropdownItem) => {
-    setNotificationList((prevList) => [notification, ...prevList]);
+    setNotificationList((old) => [notification, ...old]);
   };
-  const clearNotificationList = () => {
-    setNotificationList([]);
-  };
-  const removeFromNotificationList = (index: string) => {
-    setNotificationList((prevAlertsList) =>
-      prevAlertsList.filter((alert) => alert.id !== index)
-    );
-  };
-  const setErrorData = (newState: { title: string; list?: Array<string> }) => {
+  function setErrorData(newState: { title: string; list?: Array<string> }) {
     setErrorDataState(newState);
     setErrorOpen(true);
     if (newState.title) {
@@ -89,8 +96,8 @@ export function AlertProvider({ children }) {
         id: _.uniqueId(),
       });
     }
-  };
-  const setNoticeData = (newState: { title: string; link?: string }) => {
+  }
+  function setNoticeData(newState: { title: string; link?: string }) {
     setNoticeDataState(newState);
     setNoticeOpen(true);
     if (newState.title) {
@@ -102,8 +109,8 @@ export function AlertProvider({ children }) {
         id: _.uniqueId(),
       });
     }
-  };
-  const setSuccessData = (newState: { title: string }) => {
+  }
+  function setSuccessData(newState: { title: string }) {
     setSuccessDataState(newState);
     setSuccessOpen(true);
     if (newState.title) {
@@ -114,11 +121,24 @@ export function AlertProvider({ children }) {
         id: _.uniqueId(),
       });
     }
-  };
-
+  }
+  function clearNotificationList() {
+    setNotificationList([]);
+  }
+  function removeFromNotificationList(index: string) {
+    setNotificationList((prevAlertsList) =>
+      prevAlertsList.filter((alert) => alert.id !== index)
+    );
+  }
   return (
     <alertContext.Provider
       value={{
+        removeFromNotificationList,
+        clearNotificationList,
+        notificationList,
+        pushNotificationList,
+        setNotificationCenter,
+        notificationCenter,
         errorData,
         setErrorData,
         errorOpen,
@@ -131,12 +151,6 @@ export function AlertProvider({ children }) {
         setSuccessData,
         successOpen,
         setSuccessOpen,
-        notificationCenter,
-        setNotificationCenter,
-        notificationList,
-        pushNotificationList,
-        clearNotificationList,
-        removeFromNotificationList,
       }}
     >
       {children}

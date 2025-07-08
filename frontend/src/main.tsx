@@ -5,9 +5,9 @@ import { BrowserRouter } from "react-router";
 import ContextWrapper from "./contexts/index.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <ContextWrapper>
-    <BrowserRouter>
+  <BrowserRouter>
+    <ContextWrapper>
       <App />
-    </BrowserRouter>
-  </ContextWrapper>
+    </ContextWrapper>
+  </BrowserRouter>
 );

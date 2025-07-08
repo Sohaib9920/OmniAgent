@@ -13,7 +13,6 @@ import {
 import "@xyflow/react/dist/style.css";
 import TextUpdaterNode from "../CustomNodes/InputText";
 import PromptNode from "../CustomNodes/PromptNode";
-import { Sidebar } from "../components/sidebar";
 import ModelNode from "../CustomNodes/ModelNode";
 
 function Flow() {
@@ -81,7 +80,6 @@ function Flow() {
 
   return (
     <div className="w-full h-full flex flex-row">
-      <Sidebar />
       <div className="w-screen h-full" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}

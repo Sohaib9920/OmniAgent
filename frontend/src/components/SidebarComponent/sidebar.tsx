@@ -1,5 +1,5 @@
-import { llm_chain } from "../data_assets/agent";
-import { prompt } from "../data_assets/prompt";
+import { llm_chain } from "../../data_assets/agent";
+import { prompt } from "../../data_assets/prompt";
 
 export function Sidebar() {
   console.log("sidebar render");
