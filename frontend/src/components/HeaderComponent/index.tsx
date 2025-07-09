@@ -1,5 +1,14 @@
-import { Fragment, useContext, useState } from "react";
-import { Menu, Transition, Popover } from "@headlessui/react";
+import { Fragment, useContext } from "react";
+import {
+  Menu,
+  Transition,
+  Popover,
+  PopoverButton,
+  PopoverPanel,
+  MenuButton,
+  MenuItems,
+  MenuItem,
+} from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router";
 import Breadcrumb from "../breadcrumbComponent";
@@ -21,7 +30,7 @@ export default function Header({ user, userNavigation }) {
         >
           <img
             className="h-8 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=white"
+            src="https://cdn.jsdelivr.net/npm/heroicons@2.0.18/24/solid/sparkles.svg"
             alt="Your Company"
           />
         </a>
@@ -35,7 +44,7 @@ export default function Header({ user, userNavigation }) {
         <div className="ml-10 flex shrink-0 items-center space-x-10 pr-4">
           <div className="flex items-center space-x-8">
             <Popover className="relative">
-              <Popover.Button
+              <PopoverButton
                 className="-mx-1 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 relative"
                 onClick={() => {
                   setNotificationCenter(false);
@@ -46,7 +55,7 @@ export default function Header({ user, userNavigation }) {
                   <div className="absolute top-[2px] w-2 h-2 rounded-full bg-red-600 right-[7px]"></div>
                 )}
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
-              </Popover.Button>
+              </PopoverButton>
 
               <Transition
                 as={Fragment}
@@ -57,23 +66,23 @@ export default function Header({ user, userNavigation }) {
                 leaveFrom="opacity-100 translate-y-0"
                 leaveTo="opacity-0 translate-y-1"
               >
-                <Popover.Panel className="absolute right-0 z-10 mt-2 transform">
+                <PopoverPanel className="absolute right-0 z-10 mt-2 transform">
                   {({ close }) => (
                     <AlertDropdown closeFunction={close} open={true} />
                   )}
-                </Popover.Panel>
+                </PopoverPanel>
               </Transition>
             </Popover>
 
             <Menu as="div" className="relative inline-block text-left">
-              <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">
+              <MenuButton className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">
                 <span className="sr-only">Open user menu</span>
                 <img
                   className="h-8 w-8 rounded-full"
                   src={user.imageUrl}
                   alt=""
                 />
-              </Menu.Button>
+              </MenuButton>
 
               <Transition
                 as={Fragment}
@@ -84,16 +93,16 @@ export default function Header({ user, userNavigation }) {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <MenuItems className="absolute right-0 z-10 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
                     {userNavigation.map((item, index) => (
-                      <Menu.Item key={index}>
-                        {({ active }) =>
+                      <MenuItem key={index}>
+                        {({ focus }) =>
                           !item.href.includes("http://") ? (
                             <Link
                               to={item.href}
                               className={classNames(
-                                active ? "bg-gray-100" : "",
+                                focus ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
@@ -103,7 +112,7 @@ export default function Header({ user, userNavigation }) {
                             <a
                               href={item.href}
                               className={classNames(
-                                active ? "bg-gray-100" : "",
+                                focus ? "bg-gray-100" : "",
                                 "block px-4 py-2 text-sm text-gray-700"
                               )}
                             >
@@ -111,10 +120,10 @@ export default function Header({ user, userNavigation }) {
                             </a>
                           )
                         }
-                      </Menu.Item>
+                      </MenuItem>
                     ))}
                   </div>
-                </Menu.Items>
+                </MenuItems>
               </Transition>
             </Menu>
           </div>

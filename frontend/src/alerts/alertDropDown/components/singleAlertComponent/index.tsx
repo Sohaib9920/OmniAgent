@@ -6,7 +6,7 @@ import {
 } from "@heroicons/react/24/outline";
 import { Link } from "react-router";
 import { Transition } from "@headlessui/react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { alertDropdownItem } from "../..";
 
 type SingleAlertProps = {
@@ -25,12 +25,13 @@ export default function SingleAlert({
   return (
     <Transition
       show={show}
-      enter="transition-transform duration-400 ease-out"
-      enterFrom={"transform translate-x-[-100%]"}
-      enterTo={"transform translate-x-0"}
-      leave="transition-transform duration-400 ease-in"
-      leaveFrom={"transform translate-x-0"}
-      leaveTo={"transform translate-x-[-100%]"}
+      appear={true}
+      enter="transition-transform duration-500 ease-out"
+      enterFrom="transform translate-x-[-100%]"
+      enterTo="transform translate-x-0"
+      leave="transition-transform duration-500 ease-in"
+      leaveFrom="transform translate-x-0"
+      leaveTo="transform translate-x-[-100%]"
     >
       {type === "error" ? (
         <div className="flex bg-red-50 rounded-md p-4 mb-2">
