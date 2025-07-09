@@ -1,7 +1,16 @@
+import { Fragment, useContext, useState } from "react";
+import { Menu, Transition, Popover } from "@headlessui/react";
 import { BellIcon } from "@heroicons/react/24/outline";
+import { Link } from "react-router";
 import Breadcrumb from "../breadcrumbComponent";
+import { alertContext } from "../../contexts/alertContext";
+import AlertDropdown from "../../alerts/alertDropDown";
+import { classNames } from "../../utils";
 
-export default function Header() {
+export default function Header({ user, userNavigation }) {
+  const { notificationCenter, setNotificationCenter } =
+    useContext(alertContext);
+
   return (
     <header className="relative flex h-16 w-full shrink-0 items-center bg-white">
       {/* Logo area */}
@@ -10,7 +19,11 @@ export default function Header() {
           href="/"
           className="flex h-16 items-center justify-center bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-600 w-20"
         >
-          <div className="h-8 w-auto font-extrabold">Omni</div>
+          <img
+            className="h-8 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=white"
+            alt="Your Company"
+          />
         </a>
       </div>
 
@@ -21,16 +34,38 @@ export default function Header() {
         </div>
         <div className="ml-10 flex shrink-0 items-center space-x-10 pr-4">
           <div className="flex items-center space-x-8">
-            <span className="inline-flex">
-              <button
-                type="button"
+            <Popover className="relative">
+              <Popover.Button
                 className="-mx-1 rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 relative"
+                onClick={() => {
+                  setNotificationCenter(false);
+                }}
               >
                 <span className="sr-only">View notifications</span>
+                {notificationCenter && (
+                  <div className="absolute top-[2px] w-2 h-2 rounded-full bg-red-600 right-[7px]"></div>
+                )}
                 <BellIcon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </span>
-            {/* <Menu as="div" className="relative inline-block text-left">
+              </Popover.Button>
+
+              <Transition
+                as={Fragment}
+                enter="transition ease-out duration-200"
+                enterFrom="opacity-0 translate-y-1"
+                enterTo="opacity-100 translate-y-0"
+                leave="transition ease-in duration-150"
+                leaveFrom="opacity-100 translate-y-0"
+                leaveTo="opacity-0 translate-y-1"
+              >
+                <Popover.Panel className="absolute right-0 z-10 mt-2 transform">
+                  {({ close }) => (
+                    <AlertDropdown closeFunction={close} open={true} />
+                  )}
+                </Popover.Panel>
+              </Transition>
+            </Popover>
+
+            <Menu as="div" className="relative inline-block text-left">
               <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">
                 <span className="sr-only">Open user menu</span>
                 <img
@@ -81,7 +116,7 @@ export default function Header() {
                   </div>
                 </Menu.Items>
               </Transition>
-            </Menu> */}
+            </Menu>
           </div>
         </div>
       </div>
