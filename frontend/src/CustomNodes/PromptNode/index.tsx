@@ -1,27 +1,24 @@
 import { Handle, Position } from "@xyflow/react";
 import { useContext } from "react";
-import { PopUpContext } from "../../context/popUpContext";
+import { PopUpContext } from "../../contexts/popUpContext";
 
-function PromptNode({ data }) {
+export default function PromptNode({ data }) {
   const { openPopUp } = useContext(PopUpContext);
   return (
     <div
       onClick={() =>
-        openPopUp(<div className="absolute top-1/2 left-1/2">test</div>)
+        openPopUp(<div className="absolute top-1/2 left-1/2">teste</div>)
       }
-      className="border h-16 w-40 rounded-sm border-black bg-white relative flex flex-col justify-center"
+      className="prompt-node relative bg-white h-16 w-40 border rounded-sm solid border-black flex flex-col justify-center"
     >
       <Handle type="source" position={Position.Left}></Handle>
-      <label className="text-sm absolute bg-white -top-3 left-1 w-14 text-center cursor-grab">
+      <label className="absolute cursor-grab text-sm -top-3 left-1 bg-white w-14 text-center">
         Prompt
       </label>
-      <div className="text-xs truncate w-full h-10 bg-slate-50">
+      <div className="w-full h-10 truncate bg-slate-50 text-xs">
         {data.template}
       </div>
-
       <Handle type="target" position={Position.Right}></Handle>
     </div>
   );
 }
-
-export default PromptNode;

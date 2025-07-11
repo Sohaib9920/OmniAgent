@@ -1,5 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 
 type locationContextType = {
   atual: Array<string>;
@@ -48,6 +49,27 @@ const initialValue = {
 
 export const locationContext = createContext<locationContextType>(initialValue);
 
+const myExtraNavigation = {
+  title: "Quick Links",
+  options: [
+    {
+      name: "Dashboard",
+      href: "/dashboard",
+      icon: ChevronLeftIcon, // In a real app, this would likely be an imported SVG or React component
+    },
+    {
+      name: "Settings",
+      href: "/settings",
+      icon: ChevronLeftIcon,
+    },
+    {
+      name: "Profile",
+      href: "/profile",
+      icon: ChevronLeftIcon,
+    },
+  ],
+};
+
 export function LocationProvider({ children }) {
   console.log("LocationProvider render");
   const [atual, setAtual] = useState(initialValue.atual);
@@ -55,7 +77,7 @@ export function LocationProvider({ children }) {
     initialValue.isStackedOpen
   );
   const [showSideBar, setShowSideBar] = useState(initialValue.showSideBar);
-  const [extraNavigation, setExtraNavigation] = useState({ title: "" });
+  const [extraNavigation, setExtraNavigation] = useState(myExtraNavigation);
   const [extraComponent, setExtraComponent] = useState(null);
   const location = useLocation();
   useEffect(() => {

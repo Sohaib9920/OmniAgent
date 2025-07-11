@@ -1,10 +1,9 @@
-import { Handle, Position } from "@xyflow/react";
 import { useCallback } from "react";
-import "./index.css";
+import { Handle, Position } from "@xyflow/react";
 
 const handleStyle = { left: 10 };
 
-function TextUpdaterNode({ data }) {
+export default function TextUpdaterNode({ data }) {
   const onChange = useCallback((evt) => {
     console.log(evt.target.value);
   }, []);
@@ -14,17 +13,15 @@ function TextUpdaterNode({ data }) {
       <Handle type="target" position={Position.Top} />
       <div>
         <label htmlFor="text">Text:</label>
-        <input id="text" name="text" onChange={onChange} className="nodrag" />
+        <input id="text" name="text" onChange={onChange}></input>
       </div>
       <Handle
         type="source"
-        position={Position.Bottom}
         id="a"
+        position={Position.Bottom}
         style={handleStyle}
       />
-      <Handle type="source" position={Position.Bottom} id="b" />
+      <Handle type="source" id="b" position={Position.Bottom} />
     </div>
   );
 }
-
-export default TextUpdaterNode;

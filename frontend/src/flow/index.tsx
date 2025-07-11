@@ -11,7 +11,7 @@ import {
   useReactFlow,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import TextUpdaterNode from "../CustomNodes/InputText";
+import TextUpdaterNode from "../CustomNodes/inputTextFolder";
 import PromptNode from "../CustomNodes/PromptNode";
 import ModelNode from "../CustomNodes/ModelNode";
 
