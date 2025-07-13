@@ -7,20 +7,30 @@ import {
 } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { Link } from "react-router";
+import type { alertDropdownItem } from "../..";
 
-export default function SingleAlert({ dropItem }) {
-  const [open, setOpen] = useState(true);
+type SingleAlertProps = {
+  dropItem: alertDropdownItem;
+  removeAlert: (id: string) => void;
+};
+
+export default function SingleAlert({
+  dropItem,
+  removeAlert,
+}: SingleAlertProps) {
+  console.log("SingleAlert render");
+  const [show, setShow] = useState(true);
   const type = dropItem.type;
   return (
-    <Transition show={open} appear={true}>
+    <Transition show={show} appear={true}>
       <div className="transition duration-500 ease-out data-closed:translate-x-[-100%]">
         {type === "error" ? (
-          <div className="bg-red-50 flex rounded-md p-4 mb-2">
+          <div className="flex bg-red-50 rounded-md p-4 mb-2" key={dropItem.id}>
             <div className="flex-shrink-0">
               <XCircleIcon
                 className="h-5 w-5 text-red-400"
                 aria-hidden="true"
-              ></XCircleIcon>
+              />
             </div>
             <div className="ml-3">
               <h3 className="text-sm font-medium text-red-800">
@@ -38,54 +48,97 @@ export default function SingleAlert({ dropItem }) {
                 <></>
               )}
             </div>
-            <div className="ml-auto pl-3 bg-red-50 rounded-md ">
-              <XMarkIcon className="h-5 w-5 text-red-600"></XMarkIcon>
+            <div className="ml-auto pl-3">
+              <div className="-mx-1.5 -my-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShow(false);
+                    setTimeout(() => {
+                      removeAlert(dropItem.id);
+                    }, 500);
+                  }}
+                  className="inline-flex rounded-md bg-red-50 p-1.5 text-red-500"
+                >
+                  <span className="sr-only">Dismiss</span>
+                  <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
             </div>
           </div>
         ) : type === "notice" ? (
-          <div className="bg-blue-50 flex rounded-md p-4 mb-2">
+          <div
+            className="flex rounded-md p-4 bg-blue-50 mb-2"
+            key={dropItem.id}
+          >
             <div className="flex-shrink-0">
               <InformationCircleIcon
                 className="h-5 w-5 text-blue-400"
                 aria-hidden="true"
-              ></InformationCircleIcon>
+              />
             </div>
             <div className="ml-3 flex-1 md:flex md:justify-between">
-              <h3 className="text-sm font-medium text-blue-800">
-                {dropItem.title}
-              </h3>
-              {dropItem.link ? (
-                <div className="mt-3 text-sm md:mt-0 md:ml-6">
+              <p className="text-sm text-blue-700">{dropItem.title}</p>
+              <p className="mt-3 text-sm md:mt-0 md:ml-6">
+                {dropItem.link ? (
                   <Link
                     to={dropItem.link}
                     className="whitespace-nowrap font-medium text-blue-700 hover:text-blue-600"
                   >
                     Details
                   </Link>
-                </div>
-              ) : (
-                <></>
-              )}
+                ) : (
+                  <></>
+                )}
+              </p>
             </div>
-            <div className="ml-auto pl-3 bg-blue-50 rounded-md ">
-              <XMarkIcon className="h-5 w-5 text-blue-600"></XMarkIcon>
+            <div className="ml-auto pl-3">
+              <div className="-mx-1.5 -my-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShow(false);
+                    setTimeout(() => {
+                      removeAlert(dropItem.id);
+                    }, 500);
+                  }}
+                  className="inline-flex rounded-md bg-blue-50 p-1.5 text-blue-500"
+                >
+                  <span className="sr-only">Dismiss</span>
+                  <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
             </div>
           </div>
         ) : (
-          <div className="bg-green-50 flex rounded-md p-4 mb-2">
+          <div className="flex bg-green-50 p-4 mb-2" key={dropItem.id}>
             <div className="flex-shrink-0">
               <CheckCircleIcon
                 className="h-5 w-5 text-green-400"
                 aria-hidden="true"
-              ></CheckCircleIcon>
+              />
             </div>
             <div className="ml-3">
-              <h3 className="text-sm font-medium text-green-800">
+              <p className="text-sm font-medium text-green-800">
                 {dropItem.title}
-              </h3>
+              </p>
             </div>
-            <div className="ml-auto pl-3 bg-green-50 rounded-md ">
-              <XMarkIcon className="h-5 w-5 text-green-600"></XMarkIcon>
+            <div className="ml-auto pl-3">
+              <div className="-mx-1.5 -my-1.5">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setShow(false);
+                    setTimeout(() => {
+                      removeAlert(dropItem.id);
+                    }, 500);
+                  }}
+                  className="inline-flex rounded-md bg-green-50 p-1.5 text-green-500"
+                >
+                  <span className="sr-only">Dismiss</span>
+                  <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                </button>
+              </div>
             </div>
           </div>
         )}

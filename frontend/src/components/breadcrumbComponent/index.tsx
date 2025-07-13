@@ -1,6 +1,8 @@
 import { HomeIcon } from "@heroicons/react/20/solid";
 import { ChevronRightIcon } from "@heroicons/react/24/outline";
+import { useContext } from "react";
 import { Link } from "react-router";
+import { locationContext } from "../../contexts/locationContext";
 
 const breadcrumbNameMap: { [key: string]: string } = {
   "/settings": "Settings",
@@ -9,7 +11,7 @@ const breadcrumbNameMap: { [key: string]: string } = {
   "/table": "Table",
 };
 
-function getPages(atual) {
+function getPages(atual: string[]) {
   let pages = [];
   for (let i = 2; i <= atual.length; i++) {
     let to = "/" + atual.slice(1, i).join("/");
@@ -19,7 +21,8 @@ function getPages(atual) {
 }
 
 export default function Breadcrumb() {
-  const atual = window.location.pathname.replace(/\/$/g, "").split("/");
+  console.log("Breadcrumb rendered");
+  const { atual } = useContext(locationContext);
 
   return (
     <nav className="flex ml-2" aria-label="Breadcrumb">

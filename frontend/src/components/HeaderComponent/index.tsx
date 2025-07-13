@@ -7,35 +7,22 @@ import {
   PopoverButton,
   PopoverPanel,
 } from "@headlessui/react";
-import {
-  BellIcon,
-  PencilIcon,
-  Square2StackIcon,
-} from "@heroicons/react/24/outline";
-import { UserCircleIcon } from "@heroicons/react/24/solid";
-import { useState } from "react";
+import { BellIcon } from "@heroicons/react/24/outline";
+import { useContext } from "react";
 import { Link } from "react-router";
 import AlertDropdown from "../../alerts/alertDropDown";
 import Breadcrumb from "../breadcrumbComponent";
+import { alertContext } from "../../contexts/alertContext";
 
-const user = {
-  name: "Whitney Francis",
-  email: "whitney.francis@example.com",
-  imageUrl:
-    "https://images.unsplash.com/photo-1517365830460-955ce3ccd263?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80",
+type HeaderProps = {
+  user: { name: string; email: string; imageUrl: string };
+  userNavigation: { name: string; href: string }[];
 };
 
-const userNavigation = [
-  { name: "Your Projects", href: "/" },
-  {
-    name: "Account settings",
-    href: "http://localhost:4455/.ory/kratos/public/self-service/settings/browser",
-  },
-  { name: "Sign out", href: "/" },
-];
-
-export default function Header() {
-  const [notificationCenter, setNotificationCenter] = useState(true);
+export default function Header({ user, userNavigation }: HeaderProps) {
+  console.log("Header render");
+  const { notificationCenter, setNotificationCenter } =
+    useContext(alertContext);
   return (
     <header className="flex h-16 w-full items-center bg-white">
       {/* Logo area */}
@@ -46,7 +33,7 @@ export default function Header() {
         >
           <img
             className="h-8 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=white"
+            src="https://img.icons8.com/?size=100&id=997y4SZQkDuP&format=png&color=000000"
             alt="Your Company"
           />
         </a>
@@ -58,8 +45,62 @@ export default function Header() {
           <Breadcrumb></Breadcrumb>
         </div>
         <div className="flex items-center space-x-8 pr-4">
-          <div>notrifications</div>
-          <div>user profile</div>
+          <Popover className="relative flex">
+            <PopoverButton
+              onClick={() => setNotificationCenter(false)}
+              className="relative rounded-full bg-white p-1 text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-indigo-600"
+            >
+              <span className="sr-only">View notifications</span>
+              {notificationCenter && (
+                <div className="absolute top-0.5 right-2 w-2 h-2 rounded-full bg-red-600"></div>
+              )}
+              <BellIcon className="h-6 w-6" aria-hidden="true" />
+            </PopoverButton>
+            <PopoverPanel
+              transition
+              className="transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0 
+            absolute -left-[36rem] top-0 -ml-2"
+            >
+              {({ close }) => (
+                <AlertDropdown closeFunction={close}></AlertDropdown>
+              )}
+            </PopoverPanel>
+          </Popover>
+          <Menu as="div" className="relative">
+            <MenuButton className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2">
+              <span className="sr-only">Open user menu</span>
+              <img
+                className="h-8 w-8 rounded-full"
+                src={user.imageUrl}
+                alt=""
+              />
+            </MenuButton>
+            <MenuItems
+              transition
+              className="transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0 
+              absolute py-1 right-0 z-10 mt-2 w-56 rounded-md bg-white shadow-lg ring-1 ring-black/5 focus:outline-none"
+            >
+              {userNavigation.map((item, index) => (
+                <MenuItem key={index}>
+                  {!item.href.includes("http://") ? (
+                    <Link
+                      to={item.href}
+                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100"
+                    >
+                      {item.name}
+                    </Link>
+                  ) : (
+                    <a
+                      href={item.href}
+                      className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100"
+                    >
+                      {item.name}
+                    </a>
+                  )}
+                </MenuItem>
+              ))}
+            </MenuItems>
+          </Menu>
         </div>
       </div>
     </header>
