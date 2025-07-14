@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { useLocation } from "react-router";
 import Header from "./components/HeaderComponent";
 import { locationContext } from "./contexts/locationContext";
+import Sidebar from "./components/SidebarComponent";
 
 const user = {
   name: "Whitney Francis",
@@ -27,8 +28,13 @@ function App() {
     setAtual(location.pathname.replace(/\/$/g, "").split("/"));
   }, [location.pathname]);
   return (
-    <div className="h-screen bg-white">
+    <div className="h-screen bg-white flex flex-col">
       <Header userNavigation={userNavigation} user={user}></Header>
+      <div className="flex flex-1">
+        <Sidebar></Sidebar>
+        <div>extra</div>
+        <div>flow</div>
+      </div>
     </div>
   );
 }
