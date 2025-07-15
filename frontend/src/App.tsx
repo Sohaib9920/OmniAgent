@@ -3,6 +3,7 @@ import { useLocation } from "react-router";
 import Header from "./components/HeaderComponent";
 import { locationContext } from "./contexts/locationContext";
 import Sidebar from "./components/SidebarComponent";
+import ExtraSidebar from "./components/ExtraSidebarComponent";
 
 const user = {
   name: "Whitney Francis",
@@ -32,7 +33,7 @@ function App() {
       <Header userNavigation={userNavigation} user={user}></Header>
       <div className="flex flex-1">
         <Sidebar></Sidebar>
-        <div>extra</div>
+        <ExtraSidebar></ExtraSidebar>
         <div>flow</div>
       </div>
     </div>
