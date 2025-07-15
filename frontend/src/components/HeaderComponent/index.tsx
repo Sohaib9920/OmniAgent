@@ -52,7 +52,7 @@ export default function Header({ user, userNavigation }: HeaderProps) {
             >
               <span className="sr-only">View notifications</span>
               {notificationCenter && (
-                <div className="absolute top-0.5 right-2 w-2 h-2 rounded-full bg-red-600"></div>
+                <div className="absolute top-[2px] w-2 h-2 rounded-full bg-red-600 right-[7px]"></div>
               )}
               <BellIcon className="h-6 w-6" aria-hidden="true" />
             </PopoverButton>

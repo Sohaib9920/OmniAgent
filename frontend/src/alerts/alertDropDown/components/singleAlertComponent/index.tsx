@@ -22,8 +22,17 @@ export default function SingleAlert({
   const [show, setShow] = useState(true);
   const type = dropItem.type;
   return (
-    <Transition show={show} appear={true}>
-      <div className="transition duration-500 ease-out data-closed:translate-x-[-100%]">
+    <Transition
+      show={show}
+      appear={true}
+      enter="transition-transform duration-500 ease-out"
+      enterFrom="transform translate-x-[-100%]"
+      enterTo="transform translate-x-0"
+      leave="transition-transform duration-500 ease-in"
+      leaveFrom="transform translate-x-0"
+      leaveTo="transform translate-x-[-100%]"
+    >
+      <div>
         {type === "error" ? (
           <div className="flex bg-red-50 rounded-md p-4 mb-2" key={dropItem.id}>
             <div className="flex-shrink-0">
