@@ -14,9 +14,19 @@ import "@xyflow/react/dist/style.css";
 import ModelNode from "../../CutomNodes/ModelNode";
 import { ExtraComponent } from "./components/extraSidebarComponent";
 import { locationContext } from "../../contexts/locationContext";
+import PromptNode from "../../CutomNodes/PromptNode";
+import ChainNode from "../../CutomNodes/ChainNode";
+import AgentNode from "../../CutomNodes/AgentNode";
+import MemoryNode from "../../CutomNodes/MemoryNode";
+import ValidatorNode from "../../CutomNodes/ValidatorNode";
 
 const nodeTypes = {
+  promptNode: PromptNode,
   modelNode: ModelNode,
+  chainNode: ChainNode,
+  agentNode: AgentNode,
+  validatorNode: ValidatorNode,
+  memoryNode: MemoryNode,
 };
 
 function Flow() {

@@ -1,7 +1,7 @@
 import { Transition } from "@headlessui/react";
 import { Handle, Position } from "@xyflow/react";
 
-export default function ModelNode({ data }) {
+export default function AgentNode({ data }) {
   console.log(data);
   return (
     <Transition
@@ -16,15 +16,13 @@ export default function ModelNode({ data }) {
     >
       <div
         onClick={data.delete}
-        className="model-node relative bg-white h-16 w-40 border rounded-sm border-black flex flex-col justify-center"
+        className="agent-node relative bg-white h-16 w-40 border rounded-sm solid border-black flex flex-col justify-center"
       >
         <Handle type="source" position={Position.Left}></Handle>
         <label className="absolute cursor-grab text-sm -top-3 left-1 bg-white w-14 text-center">
-          Model
+          Agent
         </label>
-        <div className="w-full h-min text-xs text-center">
-          {data.llm.model_name}
-        </div>
+        <div className="w-full h-min text-xs text-center">Agent data</div>
         <Handle type="target" position={Position.Right}></Handle>
       </div>
     </Transition>

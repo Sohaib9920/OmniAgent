@@ -58,7 +58,7 @@ export default function Header({ user, userNavigation }: HeaderProps) {
             </PopoverButton>
             <PopoverPanel
               transition
-              className="transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0 
+              className="z-10 transition duration-100 ease-out data-closed:scale-95 data-closed:opacity-0 
             absolute -left-[36rem] top-0 -ml-2"
             >
               {({ close }) => (
