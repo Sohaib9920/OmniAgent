@@ -1,13 +1,6 @@
 import { useContext } from "react";
 import { locationContext } from "../../contexts/locationContext";
-import {
-  ChartBarIcon,
-  CheckCircleIcon,
-  ChevronLeftIcon,
-  CogIcon,
-  UserGroupIcon,
-  UsersIcon,
-} from "@heroicons/react/24/outline";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
 import { Link } from "react-router";
 import {
   Disclosure,
@@ -15,38 +8,15 @@ import {
   DisclosurePanel,
 } from "@headlessui/react";
 
-export const extraNavigation = {
-  title: "Dashboard",
-  options: [
-    {
-      name: "Overview",
-      href: "/dashboard",
-      icon: ChartBarIcon,
-    },
-    {
-      name: "Users",
-      href: "/users",
-      icon: UsersIcon,
-      children: [
-        { name: "All Users", href: "/users/all", icon: UserGroupIcon },
-        { name: "Active", href: "/users/active", icon: CheckCircleIcon },
-      ],
-    },
-    {
-      name: "Settings",
-      href: "/settings",
-      icon: CogIcon,
-    },
-  ],
-};
-
 export default function ExtraSidebar() {
-  const { isStackedOpen, setIsStackedOpen } = useContext(locationContext);
+  console.log("ExtraSidebar render");
+  const { isStackedOpen, setIsStackedOpen, extraNavigation, extraComponent } =
+    useContext(locationContext);
   return (
     <aside
       className={`${
         isStackedOpen ? "w-60" : "w-0"
-      } border-r border-black/10 h-full transition-all duration-500 overflow-hidden`}
+      } border-r border-gray-200 h-full transition-all duration-500 overflow-hidden`}
     >
       <div className="w-60 h-full overflow-y-auto bg-white">
         <div className="flex justify-between items-center px-4 pt-4">
@@ -102,7 +72,7 @@ export default function ExtraSidebar() {
                           </svg>
                         </DisclosureButton>
                         <DisclosurePanel className="space-y-1">
-                          {item.children.map((subItem) => (
+                          {item.children?.map((subItem) => (
                             <Link
                               to={subItem.href}
                               key={subItem.name}
@@ -120,7 +90,7 @@ export default function ExtraSidebar() {
               )}
             </div>
           ) : (
-            <div>nothing</div>
+            <>{extraComponent}</>
           )}
         </div>
       </div>

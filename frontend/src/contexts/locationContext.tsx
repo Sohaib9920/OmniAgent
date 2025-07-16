@@ -7,6 +7,26 @@ type locationContextType = {
   setShowSideBar: (newState: boolean) => void;
   isStackedOpen: boolean;
   setIsStackedOpen: (newState: boolean) => void;
+  extraNavigation: {
+    title: string;
+    options?: Array<{
+      name: string;
+      href: string;
+      icon: any;
+      children?: Array<any>;
+    }>;
+  };
+  setExtraNavigation: (newState: {
+    title: string;
+    options?: Array<{
+      name: string;
+      href: string;
+      icon: any;
+      children?: Array<any>;
+    }>;
+  }) => void;
+  extraComponent: any;
+  setExtraComponent: (newState: any) => void;
 };
 
 const initialValue = {
@@ -16,6 +36,10 @@ const initialValue = {
   setShowSideBar: () => {},
   isStackedOpen: false,
   setIsStackedOpen: () => {},
+  extraNavigation: { title: "" },
+  setExtraNavigation: () => {},
+  extraComponent: null,
+  setExtraComponent: () => {},
 };
 
 export const locationContext = createContext<locationContextType>(initialValue);
@@ -31,6 +55,8 @@ export function LocationProvider({
   const [isStackedOpen, setIsStackedOpen] = useState(
     initialValue.isStackedOpen
   );
+  const [extraNavigation, setExtraNavigation] = useState({ title: "" });
+  const [extraComponent, setExtraComponent] = useState(null);
 
   return (
     <locationContext.Provider
@@ -41,6 +67,10 @@ export function LocationProvider({
         setShowSideBar,
         isStackedOpen,
         setIsStackedOpen,
+        extraNavigation,
+        setExtraNavigation,
+        extraComponent,
+        setExtraComponent,
       }}
     >
       {children}

@@ -4,6 +4,8 @@ import Header from "./components/HeaderComponent";
 import { locationContext } from "./contexts/locationContext";
 import Sidebar from "./components/SidebarComponent";
 import ExtraSidebar from "./components/ExtraSidebarComponent";
+import { ExtraComponent } from "./pages/FlowPage/components/extraSidebarComponent";
+import Flow from "./pages/FlowPage";
 
 const user = {
   name: "Whitney Francis",
@@ -34,7 +36,9 @@ function App() {
       <div className="flex flex-1">
         <Sidebar></Sidebar>
         <ExtraSidebar></ExtraSidebar>
-        <div>flow</div>
+        <div className="flex-1 border-t border-gray-200">
+          <Flow></Flow>
+        </div>
       </div>
     </div>
   );
