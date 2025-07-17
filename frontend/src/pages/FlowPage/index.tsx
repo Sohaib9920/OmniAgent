@@ -29,7 +29,7 @@ const nodeTypes = {
   memoryNode: MemoryNode,
 };
 
-function Flow() {
+function FlowPage() {
   console.log("flow render");
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
@@ -102,4 +102,4 @@ function Flow() {
   );
 }
 
-export default Flow;
+export default FlowPage;

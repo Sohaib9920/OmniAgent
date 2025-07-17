@@ -1,11 +1,16 @@
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 import Header from "./components/HeaderComponent";
 import { locationContext } from "./contexts/locationContext";
 import Sidebar from "./components/SidebarComponent";
 import ExtraSidebar from "./components/ExtraSidebarComponent";
-import { ExtraComponent } from "./pages/FlowPage/components/extraSidebarComponent";
-import Flow from "./pages/FlowPage";
+import ErrorAlert from "./alerts/error";
+import NoticeAlert from "./alerts/notice";
+import SuccessAlert from "./alerts/success";
+import { alertContext } from "./contexts/alertContext";
+import _ from "lodash";
+import { ReactFlowProvider } from "@xyflow/react";
+import FlowPage from "./pages/FlowPage";
 
 const user = {
   name: "Whitney Francis",
@@ -23,23 +28,121 @@ const userNavigation = [
   { name: "Sign out", href: "/" },
 ];
 
+type AlertList = {
+  type: "notice" | "error" | "success";
+  data: {
+    title: string;
+    list?: string[];
+    link?: string;
+  };
+  id: string;
+}[];
+
 function App() {
   console.log("App render");
-  let { setAtual } = useContext(locationContext);
+
+  let { setAtual, setShowSideBar, setIsStackedOpen } =
+    useContext(locationContext);
   let location = useLocation();
   useEffect(() => {
     setAtual(location.pathname.replace(/\/$/g, "").split("/"));
-  }, [location.pathname]);
+    setShowSideBar(true);
+    setIsStackedOpen(true);
+  }, [location.pathname, setAtual, setIsStackedOpen, setShowSideBar]);
+
+  const {
+    errorData,
+    errorOpen,
+    setErrorOpen,
+    noticeData,
+    noticeOpen,
+    setNoticeOpen,
+    successData,
+    successOpen,
+    setSuccessOpen,
+  } = useContext(alertContext);
+
+  const [alertsList, setAlertsList] = useState<AlertList>([]);
+
+  useEffect(() => {
+    if (errorOpen && errorData) {
+      setErrorOpen(false);
+      setAlertsList((old) => {
+        let newAlertsList: AlertList = [
+          ...old,
+          { type: "error", data: _.cloneDeep(errorData), id: _.uniqueId() },
+        ];
+        return newAlertsList;
+      });
+    } else if (noticeOpen && noticeData) {
+      setNoticeOpen(false);
+      setAlertsList((old) => {
+        let newAlertsList: AlertList = [
+          ...old,
+          { type: "notice", data: _.cloneDeep(noticeData), id: _.uniqueId() },
+        ];
+        return newAlertsList;
+      });
+    } else if (successOpen && successData) {
+      setSuccessOpen(false);
+      setAlertsList((old) => {
+        let newAlertsList: AlertList = [
+          ...old,
+          { type: "success", data: _.cloneDeep(successData), id: _.uniqueId() },
+        ];
+        return newAlertsList;
+      });
+    }
+  }, [errorData, errorOpen, noticeData, noticeOpen, successData, successOpen]);
+
+  const removeAlert = (id: string) => {
+    setAlertsList((prevAlertsList) =>
+      prevAlertsList.filter((alert) => alert.id !== id)
+    );
+  };
+
   return (
     <div className="h-screen bg-white flex flex-col">
-      <Header userNavigation={userNavigation} user={user}></Header>
-      <div className="flex flex-1">
-        <Sidebar></Sidebar>
-        <ExtraSidebar></ExtraSidebar>
-        <div className="flex-1 border-t border-gray-200">
-          <Flow></Flow>
+      <ReactFlowProvider>
+        <Header userNavigation={userNavigation} user={user}></Header>
+        <div className="flex flex-1">
+          <Sidebar />
+          <ExtraSidebar />
+          <div className="flex-1 border-t border-gray-200">
+            <FlowPage />
+          </div>
         </div>
-      </div>
+        <div className="z-50 flex flex-col-reverse fixed bottom-5 left-5">
+          {alertsList.map((alert) => (
+            <div key={alert.id}>
+              {alert.type === "error" ? (
+                <ErrorAlert
+                  key={alert.id}
+                  title={alert.data.title}
+                  list={alert.data.list}
+                  id={alert.id}
+                  removeAlert={removeAlert}
+                />
+              ) : alert.type === "notice" ? (
+                <NoticeAlert
+                  key={alert.id}
+                  title={alert.data.title}
+                  link={alert.data.link}
+                  id={alert.id}
+                  removeAlert={removeAlert}
+                />
+              ) : (
+                <SuccessAlert
+                  key={alert.id}
+                  title={alert.data.title}
+                  id={alert.id}
+                  removeAlert={removeAlert}
+                />
+              )}
+            </div>
+          ))}
+        </div>
+      </ReactFlowProvider>
     </div>
   );
 }
