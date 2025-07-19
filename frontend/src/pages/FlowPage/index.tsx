@@ -18,18 +18,29 @@ import PromptNode from "../../CutomNodes/PromptNode";
 import ChainNode from "../../CutomNodes/ChainNode";
 import AgentNode from "../../CutomNodes/AgentNode";
 import MemoryNode from "../../CutomNodes/MemoryNode";
-import ValidatorNode from "../../CutomNodes/ValidatorNode";
+import {
+  getModels,
+  getPrompts,
+  getTools,
+} from "../../controllers/NodeServices";
+import ToolsNode from "../../CutomNodes/ToolsNode";
 
 const nodeTypes = {
   promptNode: PromptNode,
   modelNode: ModelNode,
   chainNode: ChainNode,
   agentNode: AgentNode,
-  validatorNode: ValidatorNode,
+  toolNode: ToolsNode,
   memoryNode: MemoryNode,
 };
 
 function FlowPage() {
+  // getPrompts().then((result) =>
+  //   result.forEach((prompt) => console.log(prompt))
+  // );
+  // getModels().then((result) => result.forEach((model) => console.log(model)));
+  // getTools().then((result) => result.forEach((tool) => console.log(tool)));
+
   console.log("flow render");
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);

@@ -5,7 +5,7 @@ import {
   LightBulbIcon,
   LinkIcon,
   RocketLaunchIcon,
-  ShieldCheckIcon,
+  WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
 import DisclosureComponent from "../DisclosureComponent";
 import { prompt } from "../../../../data_assets/prompt";
@@ -29,7 +29,7 @@ export function ExtraComponent() {
     if (nodeType === "agentNode") {
       json = JSON.stringify({ content: "" });
     }
-    if (nodeType === "validatorNode") {
+    if (nodeType === "toolNode") {
       json = JSON.stringify({ content: "" });
     }
     if (nodeType === "memoryNode") {
@@ -81,14 +81,14 @@ export function ExtraComponent() {
         </div>
       </DisclosureComponent>
       <DisclosureComponent
-        button={{ title: "Validators", Icon: ShieldCheckIcon }}
+        button={{ title: "Tools", Icon: WrenchScrewdriverIcon }}
       >
         <div
           draggable
           className="flex justify-between text-sm p-4 items-center h-12 m-2 border-dashed border-gray-400 rounded-md border-2 cursor-grab"
-          onDragStart={(event) => onDragStart(event, "validatorNode")}
+          onDragStart={(event) => onDragStart(event, "toolNode")}
         >
-          <span className="text-black">Validator</span>
+          <span className="text-black">Tools</span>
           <Bars2Icon className="w-6 text-gray-400" />
         </div>
       </DisclosureComponent>
