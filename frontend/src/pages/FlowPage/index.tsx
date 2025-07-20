@@ -10,7 +10,6 @@ import {
   useEdgesState,
   type ReactFlowInstance,
 } from "@xyflow/react";
-import "@xyflow/react/dist/style.css";
 import ModelNode from "../../CutomNodes/ModelNode";
 import { ExtraComponent } from "./components/extraSidebarComponent";
 import { locationContext } from "../../contexts/locationContext";
@@ -18,12 +17,12 @@ import PromptNode from "../../CutomNodes/PromptNode";
 import ChainNode from "../../CutomNodes/ChainNode";
 import AgentNode from "../../CutomNodes/AgentNode";
 import MemoryNode from "../../CutomNodes/MemoryNode";
+import ToolsNode from "../../CutomNodes/ToolsNode";
 import {
   getModels,
   getPrompts,
   getTools,
 } from "../../controllers/NodeServices";
-import ToolsNode from "../../CutomNodes/ToolsNode";
 
 const nodeTypes = {
   promptNode: PromptNode,

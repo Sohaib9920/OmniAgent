@@ -22,7 +22,7 @@ interface DisclosureComponentProps {
 }
 
 export default function DisclosureComponent({
-  button: { title, Icon, Modal = null, buttons = [] },
+  button: { title, Icon, buttons = [] },
   children,
 }: DisclosureComponentProps) {
   console.log("DisclosureComponent render");

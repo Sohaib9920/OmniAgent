@@ -1,5 +1,7 @@
+import "@xyflow/react/dist/style.css";
 import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import "./App.css";
 import Header from "./components/HeaderComponent";
 import { locationContext } from "./contexts/locationContext";
 import Sidebar from "./components/SidebarComponent";
