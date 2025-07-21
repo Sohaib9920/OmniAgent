@@ -23,6 +23,7 @@ import {
   getPrompts,
   getTools,
 } from "../../controllers/NodeServices";
+import Chat from "../../components/chatComponent";
 
 const nodeTypes = {
   promptNode: PromptNode,
@@ -108,6 +109,7 @@ function FlowPage() {
         <Background />
         <Controls></Controls>
       </ReactFlow>
+      <Chat />
     </div>
   );
 }
