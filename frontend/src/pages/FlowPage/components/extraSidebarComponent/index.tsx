@@ -2,10 +2,20 @@ import { Bars2Icon } from "@heroicons/react/24/outline";
 import DisclosureComponent from "../DisclosureComponent";
 import { prompt } from "../../../../data_assets/prompt";
 import { llm_chain } from "../../../../data_assets/llm_chain";
-import { nodeColors, nodeIcons } from "../../../../utils";
+import { useEffect, useState } from "react";
+import { getAll } from "../../../../controllers/NodeServices";
+import { nodeColors, nodeIcons, toFirstUpperCase } from "../../../../utils";
 
-export function ExtraComponent() {
+export default function ExtraComponent() {
   console.log("ExtraComponent render");
+  const [data, setData] = useState({});
+
+  useEffect(() => {
+    getAll().then((d) => {
+      setData(d.data);
+    });
+  }, []);
+
   function onDragStart(event: React.DragEvent<any>, nodeType: string) {
     let json = "";
     event.dataTransfer.setData("application/reactflow", nodeType);
@@ -33,107 +43,28 @@ export function ExtraComponent() {
 
   return (
     <div className="mt-4">
-      <DisclosureComponent
-        button={{ title: "Prompts", Icon: nodeIcons["prompt"] }}
-      >
-        <div className="p-2">
-          <div
-            draggable
-            className={" cursor-grab border-l-8 rounded-l-md"}
-            style={{ borderLeftColor: nodeColors["prompt"] }}
-            onDragStart={(event) => onDragStart(event, "promptNode")}
-          >
-            <div className="flex justify-between text-sm p-4 items-center h-12 border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
-              <span className="text-black">Prompt</span>
-              <Bars2Icon className="w-6 text-gray-400" />
+      {Object.keys(data).map((d, i) => (
+        <DisclosureComponent
+          key={i}
+          button={{ title: toFirstUpperCase(d), Icon: nodeIcons[d] }}
+        >
+          {Object.keys(data[d]).map((t, k) => (
+            <div key={k} className="p-2 pb-0">
+              <div
+                draggable
+                className={" cursor-grab border-l-8 rounded-l-md"}
+                style={{ borderLeftColor: nodeColors[d] }}
+                onDragStart={(event) => onDragStart(event, "promptNode")}
+              >
+                <div className="flex justify-between text-sm px-4 py-3 items-center border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
+                  <span className="text-black truncate">{t}</span>
+                  <Bars2Icon className="ml-3 w-6 h-6 text-gray-400" />
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-      </DisclosureComponent>
-      <DisclosureComponent
-        button={{ title: "Models", Icon: nodeIcons["model"] }}
-      >
-        <div className="p-2">
-          <div
-            draggable
-            className={" cursor-grab border-l-8 rounded-l-md"}
-            style={{ borderLeftColor: nodeColors["model"] }}
-            onDragStart={(event) => onDragStart(event, "modelNode")}
-          >
-            <div className="flex justify-between text-sm p-4 items-center h-12 border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
-              <span className="text-black">Model</span>
-              <Bars2Icon className="w-6 text-gray-400" />
-            </div>
-          </div>
-        </div>
-      </DisclosureComponent>
-
-      <DisclosureComponent
-        button={{ title: "Agents", Icon: nodeIcons["agent"] }}
-      >
-        <div className="p-2">
-          <div
-            draggable
-            className={" cursor-grab border-l-8 rounded-l-md"}
-            style={{ borderLeftColor: nodeColors["agent"] }}
-            onDragStart={(event) => onDragStart(event, "agentNode")}
-          >
-            <div className="flex justify-between text-sm p-4 items-center h-12 border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
-              <span className="text-black">Agent</span>
-              <Bars2Icon className="w-6 text-gray-400" />
-            </div>
-          </div>
-        </div>
-      </DisclosureComponent>
-      <DisclosureComponent button={{ title: "Tools", Icon: nodeIcons["tool"] }}>
-        <div className="p-2">
-          <div
-            draggable
-            className={" cursor-grab border-l-8 rounded-l-md"}
-            style={{ borderLeftColor: nodeColors["tool"] }}
-            onDragStart={(event) => onDragStart(event, "toolNode")}
-          >
-            <div className="flex justify-between text-sm p-4 items-center h-12 border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
-              <span className="text-black">Tool</span>
-              <Bars2Icon className="w-6 text-gray-400" />
-            </div>
-          </div>
-        </div>
-      </DisclosureComponent>
-      <DisclosureComponent
-        button={{ title: "Memories", Icon: nodeIcons["memory"] }}
-      >
-        <div className="p-2">
-          <div
-            draggable
-            className={" cursor-grab border-l-8 rounded-l-md"}
-            style={{ borderLeftColor: nodeColors["memory"] }}
-            onDragStart={(event) => onDragStart(event, "memoryNode")}
-          >
-            <div className="flex justify-between text-sm p-4 items-center h-12 border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
-              <span className="text-black">Memory</span>
-              <Bars2Icon className="w-6 text-gray-400" />
-            </div>
-          </div>
-        </div>
-      </DisclosureComponent>
-      <DisclosureComponent
-        button={{ title: "Chains", Icon: nodeIcons["chain"] }}
-      >
-        <div className="p-2">
-          <div
-            draggable
-            className={" cursor-grab border-l-8 rounded-l-md"}
-            style={{ borderLeftColor: nodeColors["chain"] }}
-            onDragStart={(event) => onDragStart(event, "chainNode")}
-          >
-            <div className="flex justify-between text-sm p-4 items-center h-12 border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
-              <span className="text-black">Chain</span>
-              <Bars2Icon className="w-6 text-gray-400" />
-            </div>
-          </div>
-        </div>
-      </DisclosureComponent>
+          ))}
+        </DisclosureComponent>
+      ))}
     </div>
   );
 }

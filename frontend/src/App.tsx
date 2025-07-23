@@ -104,10 +104,10 @@ function App() {
   };
 
   return (
-    <div className="h-screen bg-white flex flex-col">
+    <div className="h-screen flex flex-col">
       <ReactFlowProvider>
         <Header userNavigation={userNavigation} user={user}></Header>
-        <div className="flex flex-1">
+        <div className="flex flex-1 overflow-hidden">
           <Sidebar />
           <ExtraSidebar />
           <div className="flex-1 border-t border-gray-200">

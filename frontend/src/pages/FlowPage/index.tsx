@@ -11,19 +11,14 @@ import {
   type ReactFlowInstance,
 } from "@xyflow/react";
 import ModelNode from "../../CutomNodes/ModelNode";
-import { ExtraComponent } from "./components/extraSidebarComponent";
 import { locationContext } from "../../contexts/locationContext";
 import PromptNode from "../../CutomNodes/PromptNode";
 import ChainNode from "../../CutomNodes/ChainNode";
 import AgentNode from "../../CutomNodes/AgentNode";
 import MemoryNode from "../../CutomNodes/MemoryNode";
 import ToolsNode from "../../CutomNodes/ToolsNode";
-import {
-  getModels,
-  getPrompts,
-  getTools,
-} from "../../controllers/NodeServices";
 import Chat from "../../components/chatComponent";
+import ExtraComponent from "./components/extraSidebarComponent";
 
 const nodeTypes = {
   promptNode: PromptNode,
@@ -35,12 +30,6 @@ const nodeTypes = {
 };
 
 function FlowPage() {
-  // getPrompts().then((result) =>
-  //   result.forEach((prompt) => console.log(prompt))
-  // );
-  // getModels().then((result) => result.forEach((model) => console.log(model)));
-  // getTools().then((result) => result.forEach((tool) => console.log(tool)));
-
   console.log("flow render");
   const [nodes, setNodes, onNodesChange] = useNodesState<Node>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
@@ -50,7 +39,7 @@ function FlowPage() {
   const { setExtraComponent, setExtraNavigation } = useContext(locationContext);
 
   useEffect(() => {
-    setExtraComponent(ExtraComponent);
+    setExtraComponent(<ExtraComponent />);
     setExtraNavigation({ title: "Nodes" });
   }, []);
 

@@ -90,7 +90,7 @@ export default function ExtraSidebar() {
               )}
             </div>
           ) : (
-            <>{extraComponent}</>
+            extraComponent
           )}
         </div>
       </div>

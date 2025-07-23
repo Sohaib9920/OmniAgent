@@ -25,8 +25,8 @@ type locationContextType = {
       children?: Array<any>;
     }>;
   }) => void;
-  extraComponent: any;
-  setExtraComponent: (newState: any) => void;
+  extraComponent: React.JSX.Element;
+  setExtraComponent: (newState: React.JSX.Element) => void;
 };
 
 const initialValue = {
@@ -38,7 +38,7 @@ const initialValue = {
   setIsStackedOpen: () => {},
   extraNavigation: { title: "" },
   setExtraNavigation: () => {},
-  extraComponent: null,
+  extraComponent: <></>,
   setExtraComponent: () => {},
 };
 
@@ -56,7 +56,7 @@ export function LocationProvider({
     initialValue.isStackedOpen
   );
   const [extraNavigation, setExtraNavigation] = useState({ title: "" });
-  const [extraComponent, setExtraComponent] = useState(null);
+  const [extraComponent, setExtraComponent] = useState(<></>);
 
   return (
     <locationContext.Provider
