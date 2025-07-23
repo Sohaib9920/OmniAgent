@@ -8,10 +8,10 @@ import Input from "../../components/inputComponent";
 import { Dropdown } from "../../components/dropdownComponent";
 import { nodeColors, nodeIcons } from "../../utils";
 
-export default function GenericNode({ data, onDelete, onRun }) {
+export default function GenericNode({ data }) {
   const Icon = nodeIcons[data.type];
   return (
-    <div className="generic-node relative bg-white min-h-96 w-96 rounded-lg solid border flex flex-col justify-center">
+    <div className="generic-node relative bg-white w-96 rounded-lg solid border flex flex-col justify-center">
       <Handle
         type="source"
         position={Position.Left}
@@ -32,23 +32,19 @@ export default function GenericNode({ data, onDelete, onRun }) {
 
       <div className="w-full p-5 h-full">
         <div className="w-full text-gray-500 text-sm truncate">
-          {data.description}
+          {data.node.description}
         </div>
-        {data.template.map((t) => (
-          <div className="w-full mt-5">
-            {t.type === "dropdown" ? (
+        {Object.entries(data.node.template).map(([k, v], idx) => (
+          <div key={idx} className="w-full mt-5">
+            {v.type === "dropdown" ? (
               <Dropdown
-                title={t.title}
-                value={t.options[0]}
-                options={t.options}
+                title={v.title}
+                value={v.options[0]}
+                options={v.options}
                 onSelect={() => {}}
               />
-            ) : t.type === "input" ? (
-              <Input
-                title={t.title}
-                placeholder={t.placeholder}
-                onChange={() => {}}
-              />
+            ) : v.type === "str" ? (
+              <Input title={k} placeholder="" onChange={() => {}} />
             ) : (
               <></>
             )}
@@ -58,11 +54,11 @@ export default function GenericNode({ data, onDelete, onRun }) {
       </div>
 
       <div className="flex w-full justify-between items-center bg-gray-50 gap-2 border-t text-gray-600 p-4 text-sm rounded-b-lg">
-        <button onClick={onDelete}>
+        <button onClick={data.onDelete}>
           <TrashIcon className="w-6 h-6"></TrashIcon>
         </button>
 
-        <button onClick={onRun}>
+        <button onClick={data.onRun}>
           <PlayIcon className="w-6 h-6"></PlayIcon>
         </button>
       </div>
