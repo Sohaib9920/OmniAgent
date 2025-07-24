@@ -9,6 +9,7 @@ import { Dropdown } from "../../components/dropdownComponent";
 import { nodeColors, nodeIcons } from "../../utils";
 
 export default function GenericNode({ data }) {
+  console.log("Generic Node render");
   const Icon = nodeIcons[data.type];
   return (
     <div className="generic-node relative bg-white w-96 rounded-lg solid border flex flex-col justify-center">
