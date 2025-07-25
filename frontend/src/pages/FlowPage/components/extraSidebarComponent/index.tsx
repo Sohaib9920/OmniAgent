@@ -1,7 +1,5 @@
 import { Bars2Icon } from "@heroicons/react/24/outline";
 import DisclosureComponent from "../DisclosureComponent";
-import { prompt } from "../../../../data_assets/prompt";
-import { llm_chain } from "../../../../data_assets/llm_chain";
 import { useEffect, useState } from "react";
 import { getAll } from "../../../../controllers/NodeServices";
 import { nodeColors, nodeIcons, toFirstUpperCase } from "../../../../utils";
@@ -9,6 +7,14 @@ import { nodeColors, nodeIcons, toFirstUpperCase } from "../../../../utils";
 export default function ExtraComponent() {
   console.log("ExtraComponent render");
   const [data, setData] = useState({});
+
+  const types = Object.keys(data).reduce((acc, curr) => {
+    Object.keys(data[curr]).forEach((c) => {
+      acc[c] = curr;
+    });
+    return acc;
+  }, {});
+  console.log(types);
 
   useEffect(() => {
     getAll().then((d) => {
