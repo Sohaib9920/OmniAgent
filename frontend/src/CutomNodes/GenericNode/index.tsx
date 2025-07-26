@@ -6,19 +6,22 @@ import {
 import { Handle, Position } from "@xyflow/react";
 import Input from "../../components/inputComponent";
 import { Dropdown } from "../../components/dropdownComponent";
-import { nodeColors, nodeIcons } from "../../utils";
+import { nodeColors, nodeIcons, snakeToNormalCase } from "../../utils";
+import Tooltip from "../../components/TooltipComponent";
 
 export default function GenericNode({ data }) {
   console.log("Generic Node render");
   const Icon = nodeIcons[data.type];
   return (
     <div className="generic-node relative bg-white w-96 rounded-lg solid border flex flex-col justify-center">
-      <Handle
-        type="source"
-        position={Position.Left}
-        id="b"
-        className="!bg-gray-400 !w-3 !h-3 -ml-0.5"
-      ></Handle>
+      <Tooltip title="test">
+        <Handle
+          type="source"
+          position={Position.Left}
+          id="b"
+          className="!bg-gray-400 !w-3 !h-3 -ml-0.5"
+        ></Handle>
+      </Tooltip>
 
       <div className="w-full flex items-center justify-between p-4 bg-gray-50 border-b rounded-t-lg">
         <div className="flex items-center gap-4 text-lg">
@@ -45,7 +48,11 @@ export default function GenericNode({ data }) {
                 onSelect={() => {}}
               />
             ) : v.type === "str" ? (
-              <Input title={k} placeholder="" onChange={() => {}} />
+              <Input
+                title={snakeToNormalCase(k)}
+                placeholder=""
+                onChange={() => {}}
+              />
             ) : (
               <></>
             )}
@@ -56,11 +63,11 @@ export default function GenericNode({ data }) {
 
       <div className="flex w-full justify-between items-center bg-gray-50 gap-2 border-t text-gray-600 p-4 text-sm rounded-b-lg">
         <button onClick={data.onDelete}>
-          <TrashIcon className="w-6 h-6"></TrashIcon>
+          <TrashIcon className="w-6 h-6 hover:text-red-500"></TrashIcon>
         </button>
 
         <button onClick={data.onRun}>
-          <PlayIcon className="w-6 h-6"></PlayIcon>
+          <PlayIcon className="w-6 h-6 hover:text-green-500"></PlayIcon>
         </button>
       </div>
 
