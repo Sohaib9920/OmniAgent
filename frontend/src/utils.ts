@@ -1,11 +1,13 @@
 import {
   CommandLineIcon,
+  ComputerDesktopIcon,
   CpuChipIcon,
   LightBulbIcon,
   LinkIcon,
   RocketLaunchIcon,
   WrenchScrewdriverIcon,
 } from "@heroicons/react/24/outline";
+import type { Edge, Node } from "@xyflow/react";
 
 export function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -18,6 +20,7 @@ export const nodeColors = {
   agents: "#903BBE",
   tools: "#FF3434",
   memories: "#FF9135",
+  elements: "#6344BE",
 };
 
 export const nodeIcons = {
@@ -27,6 +30,7 @@ export const nodeIcons = {
   llms: LightBulbIcon,
   prompts: CommandLineIcon,
   tools: WrenchScrewdriverIcon,
+  elements: ComputerDesktopIcon,
 };
 
 export function toFirstUpperCase(str: string) {
@@ -47,3 +51,22 @@ export function snakeToNormalCase(str: string) {
     })
     .join(" ");
 }
+
+export function getConnectedNodes(edge: Edge, nodes: Array<Node>): Array<Node> {
+  const sourceId = edge.source;
+  const targetId = edge.target;
+  const connectedNodes = nodes.filter(
+    (node) => node.id === sourceId || node.id === targetId
+  );
+  return connectedNodes;
+}
+
+export const nodeNames = {
+  prompts: "Prompts",
+  llms: "LLMs",
+  chains: "Chains",
+  agents: "Agents",
+  tools: "Tools",
+  memories: "Memories",
+  elements: "Elements",
+};

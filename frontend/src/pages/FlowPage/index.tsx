@@ -14,9 +14,17 @@ import { locationContext } from "../../contexts/locationContext";
 import Chat from "../../components/chatComponent";
 import ExtraComponent from "./components/extraSidebarComponent";
 import GenericNode from "../../CutomNodes/GenericNode";
+import connection from "./components/connection";
+import { getConnectedNodes } from "../../utils";
+import InputNode from "../../CutomNodes/InputNode";
+import ChatInputNode from "../../CutomNodes/ChatInputNode";
+import ChatOutputNode from "../../CutomNodes/ChatOutputNode";
 
 const nodeTypes = {
   genericNode: GenericNode,
+  inputNode: InputNode,
+  chatInputNode: ChatInputNode,
+  chatOutputNode: ChatOutputNode,
 };
 
 function FlowPage() {
@@ -37,8 +45,13 @@ function FlowPage() {
   }, [setExtraComponent, setExtraNavigation]);
 
   const onConnect = useCallback(
-    (params: any) => setEdges((eds) => addEdge(params, eds)),
-    []
+    (params: any) => {
+      console.log(params);
+      // console.log(reactFlowInstance.getNodes());
+      // console.log(getConnectedNodes(params, reactFlowInstance.getNodes()));
+      setEdges((eds) => addEdge(params, eds));
+    },
+    [reactFlowInstance]
   );
 
   const onDragOver = useCallback((event: React.DragEvent) => {
@@ -56,15 +69,27 @@ function FlowPage() {
         y: event.clientY,
       });
 
+      let newId = getId();
       setNodes((nds) => {
         const newNode = {
-          id: getId(),
-          type: "genericNode",
+          id: newId,
+          type:
+            data.name === "str"
+              ? "inputNode"
+              : data.name === "chatInput"
+              ? "chatInputNode"
+              : data.name === "chatOutput"
+              ? "chatOutputNode"
+              : "genericNode",
           position,
           data: {
             ...data,
-            onDelete: () => console.log("Deleted"),
-            onRun: () => console.log("Run"),
+            instance: reactFlowInstance,
+            onDelete: () => {
+              setNodes(
+                reactFlowInstance.getNodes().filter((n) => n.id !== newId)
+              );
+            },
           },
         };
         return nds.concat(newNode);
@@ -85,12 +110,13 @@ function FlowPage() {
         nodeTypes={nodeTypes}
         onDragOver={onDragOver}
         onDrop={onDrop}
+        connectionLineComponent={connection}
         fitView
       >
         <Background />
         <Controls></Controls>
       </ReactFlow>
-      <Chat />
+      <Chat nodes={nodes} edges={edges} />
     </div>
   );
 }

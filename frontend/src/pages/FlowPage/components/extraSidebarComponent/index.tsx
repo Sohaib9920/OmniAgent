@@ -2,7 +2,12 @@ import { Bars2Icon } from "@heroicons/react/24/outline";
 import DisclosureComponent from "../DisclosureComponent";
 import { useEffect, useState } from "react";
 import { getAll } from "../../../../controllers/NodeServices";
-import { nodeColors, nodeIcons, toFirstUpperCase } from "../../../../utils";
+import {
+  nodeColors,
+  nodeIcons,
+  nodeNames,
+  toFirstUpperCase,
+} from "../../../../utils";
 
 export default function ExtraComponent() {
   console.log("ExtraComponent render");
@@ -31,7 +36,7 @@ export default function ExtraComponent() {
       {Object.keys(data).map((d, i) => (
         <DisclosureComponent
           key={i}
-          button={{ title: toFirstUpperCase(d), Icon: nodeIcons[d] }}
+          button={{ title: nodeNames[d], Icon: nodeIcons[d] }}
         >
           <div className="p-2 flex flex-col gap-2">
             {Object.keys(data[d]).map((t, k) => (
@@ -59,6 +64,72 @@ export default function ExtraComponent() {
           </div>
         </DisclosureComponent>
       ))}
+      <DisclosureComponent
+        button={{ title: nodeNames["elements"], Icon: nodeIcons["elements"] }}
+      >
+        <div className="p-2 flex flex-col gap-2">
+          <div>
+            <div
+              draggable
+              className={" cursor-grab border-l-8 rounded-l-md"}
+              style={{ borderLeftColor: nodeColors["elements"] }}
+              onDragStart={(event) =>
+                onDragStart(event, {
+                  type: "elements",
+                  name: "str",
+                  types: types,
+                })
+              }
+            >
+              <div className="flex w-full justify-between text-sm px-4 py-3 items-center border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
+                <span className="text-black w-36 truncate">String</span>
+
+                <Bars2Icon className="w-6 h-6 text-gray-400" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div
+              draggable
+              className={" cursor-grab border-l-8 rounded-l-md"}
+              style={{ borderLeftColor: nodeColors["elements"] }}
+              onDragStart={(event) =>
+                onDragStart(event, {
+                  type: "elements",
+                  name: "chatInput",
+                })
+              }
+            >
+              <div className="flex w-full justify-between text-sm px-4 py-3 items-center border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
+                <span className="text-black w-36 truncate">Chat Input</span>
+
+                <Bars2Icon className="w-6 h-6 text-gray-400" />
+              </div>
+            </div>
+          </div>
+
+          <div>
+            <div
+              draggable
+              className={" cursor-grab border-l-8 rounded-l-md"}
+              style={{ borderLeftColor: nodeColors["elements"] }}
+              onDragStart={(event) =>
+                onDragStart(event, {
+                  type: "elements",
+                  name: "chatOutput",
+                })
+              }
+            >
+              <div className="flex w-full justify-between text-sm px-4 py-3 items-center border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
+                <span className="text-black w-36 truncate">Chat Output</span>
+
+                <Bars2Icon className="w-6 h-6 text-gray-400" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </DisclosureComponent>
     </div>
   );
 }
