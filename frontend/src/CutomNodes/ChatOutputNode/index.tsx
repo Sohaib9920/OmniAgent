@@ -1,6 +1,7 @@
 import { ChatBubbleBottomCenterTextIcon } from "@heroicons/react/24/outline";
 import { Handle, Position } from "@xyflow/react";
 import Tooltip from "../../components/TooltipComponent";
+import { isValidConnection } from "../../utils";
 
 export default function ChatOutputNode({ data }) {
   return (
@@ -8,13 +9,11 @@ export default function ChatOutputNode({ data }) {
       <Tooltip title="Message: str">
         <Handle
           type="source"
-          isValidConnection={({ sourceHandle, targetHandle }) =>
-            targetHandle === sourceHandle ||
-            data.types[targetHandle] === sourceHandle ||
-            sourceHandle === "str"
+          isValidConnection={(connection) =>
+            isValidConnection(data, connection)
           }
           position={Position.Left}
-          id="str"
+          id={"str|output|" + data.id}
           className="!ml-1 !bg-transparent !border-solid !border-l-8 !border-l-white !border-y-transparent !border-y-8 !border-r-0 !rounded-none"
         ></Handle>
       </Tooltip>

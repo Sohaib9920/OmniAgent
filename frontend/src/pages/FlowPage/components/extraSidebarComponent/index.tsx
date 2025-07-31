@@ -75,7 +75,6 @@ export default function ExtraComponent() {
                 onDragStart(event, {
                   type: "elements",
                   name: "str",
-                  types: types,
                 })
               }
             >

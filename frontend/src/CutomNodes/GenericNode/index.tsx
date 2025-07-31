@@ -1,6 +1,6 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import { Handle, Position } from "@xyflow/react";
-import { nodeColors, nodeIcons } from "../../utils";
+import { isValidConnection, nodeColors, nodeIcons } from "../../utils";
 import Tooltip from "../../components/TooltipComponent";
 
 export default function GenericNode({ data }) {
@@ -38,11 +38,9 @@ export default function GenericNode({ data }) {
               <Handle
                 type="source"
                 position={Position.Left}
-                id={data.node.template[t].type}
-                isValidConnection={({ sourceHandle, targetHandle }) =>
-                  targetHandle === sourceHandle ||
-                  data.types[targetHandle] === sourceHandle ||
-                  sourceHandle === "str"
+                id={data.node.template[t].type + "|" + t + "|" + data.id}
+                isValidConnection={(connection) =>
+                  isValidConnection(data, connection)
                 }
                 className="!ml-1 !bg-transparent !border-solid !border-l-8 !border-y-transparent !border-y-8 !border-r-0 !rounded-none"
                 style={{
@@ -65,10 +63,8 @@ export default function GenericNode({ data }) {
           type="target"
           position={Position.Right}
           id={data.name}
-          isValidConnection={({ sourceHandle, targetHandle }) =>
-            targetHandle === sourceHandle ||
-            data.types[targetHandle] === sourceHandle ||
-            sourceHandle === "str"
+          isValidConnection={(connection) =>
+            isValidConnection(data, connection)
           }
           className="!-mr-1 !bg-transparent !border-solid !border-l-8 !border-y-transparent !border-y-8 !border-r-0 !rounded-none"
           style={{ borderLeftColor: nodeColors[data.type] }}

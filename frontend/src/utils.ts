@@ -70,3 +70,38 @@ export const nodeNames = {
   memories: "Memories",
   elements: "Elements",
 };
+
+export function isValidConnection(
+  data,
+  { source, target, sourceHandle, targetHandle }
+) {
+  console.log(source, target, sourceHandle, targetHandle);
+  console.log(data.reactFlowInstance.getEdges());
+  if (
+    targetHandle === sourceHandle.split("|")[0] ||
+    sourceHandle.split("|")[0] === "str" ||
+    data.types[targetHandle] === sourceHandle.split("|")[0]
+  ) {
+    let sourceNode = data.reactFlowInstance.getNode(source).data.node;
+    if (!sourceNode) {
+      console.log("hy");
+      if (
+        !data.reactFlowInstance
+          .getEdges()
+          .find((e) => e.sourceHandle === sourceHandle)
+      ) {
+        return true;
+      }
+    } else if (
+      (!sourceNode.template[sourceHandle.split("|")[1]].list &&
+        !data.reactFlowInstance
+          .getEdges()
+          .find((e) => e.sourceHandle === sourceHandle)) ||
+      sourceNode.template[sourceHandle.split("|")[1]].list
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}

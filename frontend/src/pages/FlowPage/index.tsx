@@ -87,9 +87,10 @@ function FlowPage() {
           position,
           data: {
             ...data,
+            id: newId,
             input: "",
             enabled: false,
-            instance: reactFlowInstance,
+            reactFlowInstance,
             onDelete: () => {
               setNodes(
                 reactFlowInstance.getNodes().filter((n) => n.id !== newId)
