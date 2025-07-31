@@ -2,23 +2,21 @@ import { Bars2Icon } from "@heroicons/react/24/outline";
 import DisclosureComponent from "../DisclosureComponent";
 import { useEffect, useState } from "react";
 import { getAll } from "../../../../controllers/NodeServices";
-import {
-  nodeColors,
-  nodeIcons,
-  nodeNames,
-  toFirstUpperCase,
-} from "../../../../utils";
+import { nodeColors, nodeIcons, nodeNames } from "../../../../utils";
 
 export default function ExtraComponent() {
   console.log("ExtraComponent render");
   const [data, setData] = useState({});
 
-  const types = Object.keys(data).reduce((acc, curr) => {
-    Object.keys(data[curr]).forEach((c) => {
-      acc[c] = curr;
-    });
-    return acc;
-  }, {});
+  const types = Object.keys(data).reduce(
+    (acc, curr) => {
+      Object.keys(data[curr]).forEach((c) => {
+        acc[c] = curr;
+      });
+      return acc;
+    },
+    { str: "elements", bool: "elements" }
+  );
 
   useEffect(() => {
     getAll().then((d) => {
@@ -123,6 +121,25 @@ export default function ExtraComponent() {
             >
               <div className="flex w-full justify-between text-sm px-4 py-3 items-center border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
                 <span className="text-black w-36 truncate">Chat Output</span>
+
+                <Bars2Icon className="w-6 h-6 text-gray-400" />
+              </div>
+            </div>
+          </div>
+          <div>
+            <div
+              draggable
+              className={" cursor-grab border-l-8 rounded-l-md"}
+              style={{ borderLeftColor: nodeColors["elements"] }}
+              onDragStart={(event) =>
+                onDragStart(event, {
+                  type: "elements",
+                  name: "bool",
+                })
+              }
+            >
+              <div className="flex w-full justify-between text-sm px-4 py-3 items-center border-dashed border-gray-400 border-l-0 rounded-md rounded-l-none border-2">
+                <span className="text-black w-36 truncate">Boolean</span>
 
                 <Bars2Icon className="w-6 h-6 text-gray-400" />
               </div>

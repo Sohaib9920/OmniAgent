@@ -15,16 +15,17 @@ import Chat from "../../components/chatComponent";
 import ExtraComponent from "./components/extraSidebarComponent";
 import GenericNode from "../../CutomNodes/GenericNode";
 import connection from "./components/connection";
-import { getConnectedNodes } from "../../utils";
 import InputNode from "../../CutomNodes/InputNode";
 import ChatInputNode from "../../CutomNodes/ChatInputNode";
 import ChatOutputNode from "../../CutomNodes/ChatOutputNode";
+import BooleanNode from "../../CutomNodes/BooleanNode";
 
 const nodeTypes = {
   genericNode: GenericNode,
   inputNode: InputNode,
   chatInputNode: ChatInputNode,
   chatOutputNode: ChatOutputNode,
+  booleanNode: BooleanNode,
 };
 
 function FlowPage() {
@@ -80,10 +81,14 @@ function FlowPage() {
               ? "chatInputNode"
               : data.name === "chatOutput"
               ? "chatOutputNode"
+              : data.name === "bool"
+              ? "booleanNode"
               : "genericNode",
           position,
           data: {
             ...data,
+            input: "",
+            enabled: false,
             instance: reactFlowInstance,
             onDelete: () => {
               setNodes(
