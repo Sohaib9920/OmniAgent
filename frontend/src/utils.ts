@@ -75,8 +75,6 @@ export function isValidConnection(
   data,
   { source, target, sourceHandle, targetHandle }
 ) {
-  console.log(source, target, sourceHandle, targetHandle);
-  console.log(data.reactFlowInstance.getEdges());
   if (
     targetHandle === sourceHandle.split("|")[0] ||
     sourceHandle.split("|")[0] === "str" ||
@@ -84,7 +82,6 @@ export function isValidConnection(
   ) {
     let sourceNode = data.reactFlowInstance.getNode(source).data.node;
     if (!sourceNode) {
-      console.log("hy");
       if (
         !data.reactFlowInstance
           .getEdges()

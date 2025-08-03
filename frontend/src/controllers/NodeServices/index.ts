@@ -5,8 +5,5 @@ export async function getAll() {
 }
 
 export async function sendAll(data) {
-  return await axios.post(
-    "http://localhost:5003/predict",
-    JSON.stringify(data)
-  );
+  return await axios.post("http://localhost:5003/predict", data);
 }

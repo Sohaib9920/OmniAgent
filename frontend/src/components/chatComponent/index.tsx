@@ -4,14 +4,20 @@ import {
   PaperAirplaneIcon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import _ from "lodash";
 import { sendAll } from "../../controllers/NodeServices";
+import { alertContext } from "../../contexts/alertContext";
 
-export default function Chat({ nodes, edges }) {
+export default function Chat({ reactFlowInstance }) {
+  console.log("Chat render");
   const [open, setOpen] = useState(true);
   const [chatValue, setChatValue] = useState("");
   const [chatHistory, setChatHistory] = useState([]);
+  const { setErrorData } = useContext(alertContext);
+  useEffect(() => {
+    ref.current.scrollIntoView({ behavior: "smooth" });
+  }, [chatHistory]);
   const addChatHistory = (message, isSend) => {
     setChatHistory((old) => {
       let newChat = _.cloneDeep(old);
@@ -19,6 +25,44 @@ export default function Chat({ nodes, edges }) {
       return newChat;
     });
   };
+  function validateChatNodes() {
+    console.log(reactFlowInstance.getNodes());
+
+    if (
+      !reactFlowInstance.getNodes().some((n) => n.type === "chatOutputNode") ||
+      !reactFlowInstance.getNodes().some((n) => n.type === "chatInputNode")
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+  function validateNodes() {
+    if (
+      reactFlowInstance
+        .getNodes()
+        .some(
+          (n) =>
+            n.data.node &&
+            Object.keys(n.data.node.template).some(
+              (t: any) =>
+                n.data.node.template[t].required &&
+                !reactFlowInstance
+                  .getEdges()
+                  .some(
+                    (e) =>
+                      e.sourceHandle.split("|")[1] === t &&
+                      e.sourceHandle.split("|")[2] === n.id
+                  )
+            )
+        )
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+  const ref = useRef(null);
   return (
     <>
       <Transition
@@ -64,6 +108,7 @@ export default function Chat({ nodes, edges }) {
                   )}
                 </div>
               ))}
+              <div ref={ref}></div>
             </div>
             <div className="w-full bg-white border-t flex items-center justify-between p-3">
               <div className="relative w-full mt-1 rounded-md shadow-sm">
@@ -79,16 +124,30 @@ export default function Chat({ nodes, edges }) {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-3">
                   <button
                     onClick={() => {
-                      let message = chatValue;
-                      setChatValue("");
-                      addChatHistory(message, true);
-                      sendAll({
-                        message,
-                        nodes,
-                        edges,
-                      }).then((r) => {
-                        addChatHistory(r, false);
-                      });
+                      if (chatValue !== "") {
+                        if (validateChatNodes()) {
+                          let message = chatValue;
+                          setChatValue("");
+                          addChatHistory(message, true);
+                          sendAll({
+                            message,
+                            nodes: JSON.stringify(reactFlowInstance.getNodes()),
+                            edges: JSON.stringify(reactFlowInstance.getEdges()),
+                          }).then((r) => {
+                            addChatHistory(r.data.messsage, false);
+                          });
+                        } else {
+                          setErrorData({
+                            title: "Error sending message",
+                            list: ["Chat nodes are missing."],
+                          });
+                        }
+                      } else {
+                        setErrorData({
+                          title: "Error sending message",
+                          list: ["The message cannot be empty."],
+                        });
+                      }
                     }}
                   >
                     <PaperAirplaneIcon
