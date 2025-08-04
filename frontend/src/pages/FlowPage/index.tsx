@@ -52,7 +52,15 @@ function FlowPage() {
       // console.log(params);
       // console.log(reactFlowInstance.getNodes());
       // console.log(getConnectedNodes(params, reactFlowInstance.getNodes()));
-      setEdges((eds) => addEdge(params, eds));
+      setEdges((eds) =>
+        addEdge(
+          {
+            ...params,
+            className: "animate-pulse",
+          },
+          eds
+        )
+      );
     },
     [reactFlowInstance]
   );

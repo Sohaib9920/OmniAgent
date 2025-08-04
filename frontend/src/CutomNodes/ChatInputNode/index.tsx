@@ -6,6 +6,18 @@ import { isValidConnection } from "../../utils";
 export default function ChatInputNode({ data }) {
   return (
     <div className="prompt-node relative rounded-lg solid border flex justify-center align-center py-3 px-6 bg-blue-600">
+      <Tooltip title="Prefix: str">
+        <Handle
+          type="source"
+          position={Position.Left}
+          id={"str|Prefix|" + data.id}
+          isValidConnection={(connection) =>
+            isValidConnection(data, connection)
+          }
+          className="!ml-1 !bg-transparent !border-solid !border-l-8 !border-y-transparent !border-y-8 !border-r-0 !rounded-none"
+          style={{ borderLeftColor: "white" }}
+        ></Handle>
+      </Tooltip>
       <Tooltip title={"Message: str"}>
         <Handle
           type="target"
