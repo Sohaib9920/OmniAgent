@@ -44,6 +44,7 @@ export function snakeToNormalCase(str: string) {
   return str
     .split("_")
     .map((word, index) => {
+      if (!word) return "";
       if (index === 0) {
         return word[0].toUpperCase() + word.slice(1).toLowerCase();
       }
